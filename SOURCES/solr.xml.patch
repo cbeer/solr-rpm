@@ -1,0 +1,10 @@
+--- server/solr/solr.xml.dist	2015-06-16 11:23:47.000000000 -0700
++++ server/solr/solr.xml	2015-06-16 11:24:04.000000000 -0700
+@@ -27,6 +27,7 @@
+ -->
+ 
+ <solr>
++  <str name="sharedLib">${solr.sharedLib:}</str>
+ 
+   <solrcloud>
+ 

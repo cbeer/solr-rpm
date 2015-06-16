@@ -1,1 +1,2 @@
 SOLR_PID_DIR=/var/run/solr
+SOLR_OPTS="-Dsolr.sharedLib=/usr/share/java/solr/plugins"

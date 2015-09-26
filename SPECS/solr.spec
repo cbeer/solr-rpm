@@ -4,8 +4,8 @@
 %define solr_user solr
 
 Name:           solr
-Version:        5.3.0
-Release:        1%{?dist}
+Version:        5.3.1
+Release:        0%{?dist}
 Summary:        A distributed, highly available, RESTful search engine
 
 Group:          System Environment/Daemons
@@ -20,6 +20,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:       jpackage-utils
 Requires:       jre >= 1.7.0
+Requires:       lsof
 
 Requires(post): chkconfig initscripts
 Requires(pre):  chkconfig initscripts
@@ -41,14 +42,25 @@ true
 %install
 rm -rf $RPM_BUILD_ROOT
 
+#bin
 %{__mkdir} -p %{buildroot}%{base_install_dir}/bin
+%{__install} -p -m 755 bin/oom_solr.sh %{buildroot}%{base_install_dir}/bin
+%{__install} -p -m 755 bin/post %{buildroot}%{base_install_dir}/bin
 %{__install} -p -m 755 bin/solr %{buildroot}%{base_install_dir}/bin
 %{__install} -p -m 644 bin/solr.in.sh %{buildroot}%{base_install_dir}/bin
 
+# contrib
+%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/contrib
+
+# licenses
+%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/licenses
+%{__install} -p -m 644 licenses/* %{buildroot}%{base_install_dir}/licenses
+
 #libs
 %{__mkdir} -p %{buildroot}%{_javadir}/%{name}/dist
-%{__install} -p -m 644 dist/*.jar %{buildroot}%{base_install_dir}/dist
+%{__install} -p -m 644 dist/solr-core-*.jar %{buildroot}%{base_install_dir}/dist
 
+# server libs
 %{__mkdir} -p %{buildroot}%{_javadir}/%{name}/server
 %{__install} -p -m 644 server/*.jar %{buildroot}%{base_install_dir}/server
 
@@ -69,20 +81,33 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__mkdir} -p %{buildroot}%{_javadir}/%{name}/server/resources
 
-%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/server/solr-webapp
+%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/server/scripts/cloud-scripts
+%{__install} -p -m 755 server/scripts/cloud-scripts/* %{buildroot}%{base_install_dir}/server/scripts/cloud-scripts
 
-%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/server/webapps
-%{__install} -p -m 644 server/webapps/*.war %{buildroot}%{base_install_dir}/server/webapps
+# webapp
 
+%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/server/solr-webapp/webapp
+%{__cp} -R -p server/solr-webapp/webapp/* %{buildroot}%{base_install_dir}/server/solr-webapp/webapp
 
 # config
 %{__mkdir} -p %{buildroot}%{_sysconfdir}/solr
+%{__install} -p -m 644 server/solr/README.txt %{buildroot}%{_sysconfdir}/solr
 %{__install} -p -m 644 server/solr/solr.xml %{buildroot}%{_sysconfdir}/solr
+%{__install} -p -m 644 server/solr/zoo.cfg %{buildroot}%{_sysconfdir}/solr
 %{__install} -p -m 644 server/resources/log4j.properties %{buildroot}%{_sysconfdir}/solr
 ln -sf %{_sysconfdir}/solr/log4j.properties %{buildroot}%{base_install_dir}/server/resources/log4j.properties
 
 %{__install} -p -m 644 server/resources/jetty-logging.properties %{buildroot}%{_sysconfdir}/solr
 ln -sf %{_sysconfdir}/solr/jetty-logging.properties %{buildroot}%{base_install_dir}/server/resources/jetty-logging.properties
+
+# docs
+%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/docs/solr-core
+%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/docs/images
+%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/docs/changes
+%{__install} -p -m 644 docs/*.html %{buildroot}%{base_install_dir}/docs
+%{__install} -p -m 644 docs/images/* %{buildroot}%{base_install_dir}/docs/images
+%{__install} -p -m 644 docs/changes/* %{buildroot}%{base_install_dir}/docs/changes
+%{__cp} -R -p docs/solr-core/* %{buildroot}%{base_install_dir}/docs/solr-core
 
 # data
 %{__mkdir} -p %{buildroot}%{_localstatedir}/lib/%{name}
@@ -130,6 +155,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_javadir}/solr
 %{_javadir}/solr/bin/*
 %{_javadir}/solr/dist/*
+%{_javadir}/solr/docs/*
+%docdir %{solr_install_dir}/docs/solr-core
+%{_javadir}/solr/licenses/*
+%docdir %{solr_install_dir}/licenses
 %{_javadir}/solr/server/*
 %dir %{_javadir}/solr/plugins
 %config(noreplace) %{_sysconfdir}/solr
@@ -140,10 +169,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_localstatedir}/lib/solr/lib
 %{_localstatedir}/run/solr
 %dir %{_localstatedir}/log/solr
-%dir %{_javadir}/solr/server/solr-webapp
 
 
 %changelog
+
+* Sat Sep 26 2015 Chris Beer <chris@cbeer.info> - 5.3.1-0
+- Update to Solr 5.3.1
 
 * Thu Sep 10 2015 Chris Beer <chris@cbeer.info> - 5.3.0-1
 - Update to Solr 5.3.0

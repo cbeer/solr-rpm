@@ -5,8 +5,8 @@
 %define plugin_source_dir contrib/%{plugin_name}
 
 Name:           solr-%{plugin_name}
-Version:        5.3.0
-Release:        1%{?dist}
+Version:        5.3.1
+Release:        0%{?dist}
 Summary:        A distributed, highly available, RESTful search engine
 
 Group:          System Environment/Daemons
@@ -35,15 +35,27 @@ rm -rf $RPM_BUILD_ROOT
 %{__install} -p -m 755 contrib/morphlines-cell/lib/* %{buildroot}%{plugin_install_dir}
 %{__install} -p -m 755 contrib/morphlines-core/lib/* %{buildroot}%{plugin_install_dir}
 
+%{__mkdir} -p %{buildroot}%{solr_install_dir}/docs/solr-%{plugin_name}-cell
+%{__mkdir} -p %{buildroot}%{solr_install_dir}/docs/solr-%{plugin_name}-core
+%{__cp} -R -p docs/solr-%{plugin_name}-cell/* %{buildroot}%{solr_install_dir}/docs/solr-%{plugin_name}-cell
+%{__cp} -R -p docs/solr-%{plugin_name}-core/* %{buildroot}%{solr_install_dir}/docs/solr-%{plugin_name}-core
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
 %{plugin_install_dir}/*
+%{solr_install_dir}/docs/solr-%{plugin_name}-cell
+%{solr_install_dir}/docs/solr-%{plugin_name}-core
+%docdir %{solr_install_dir}/docs/solr-%{plugin_name}-cell
+%docdir %{solr_install_dir}/docs/solr-%{plugin_name}-core
 %doc contrib/morphlines-cell/README.txt
 
 %changelog
+
+* Sat Sep 26 2015 Chris Beer <chris@cbeer.info> - 5.3.1-0
+- Update to Solr 5.3.1
 
 * Thu Sep 10 2015 Chris Beer <chris@cbeer.info> - 5.3.0-1
 - Update to Solr 5.3.0

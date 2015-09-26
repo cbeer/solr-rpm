@@ -1,8 +1,6 @@
 %define debug_package %{nil}
 %define solr_install_dir %{_javadir}/solr
-%define plugin_install_dir %{solr_install_dir}/plugins
-%define plugin_name dataimporthandler-extras
-%define plugin_source_dir contrib/%{plugin_name}
+%define plugin_name solrj
 
 Name:           solr-%{plugin_name}
 Version:        5.3.1
@@ -31,8 +29,14 @@ true
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__mkdir} -p %{buildroot}%{plugin_install_dir}
-%{__install} -p -m 755 %{plugin_source_dir}/lib/* %{buildroot}%{plugin_install_dir}
+%{__mkdir} -p %{buildroot}%{solr_install_dir}/dist
+%{__install} -p -m 644 dist/solr-solrj-*.jar %{buildroot}%{solr_install_dir}/dist
+
+%{__mkdir} -p %{buildroot}%{solr_install_dir}/dist/solrj-lib
+%{__install} -p -m 644 dist/solrj-lib/*.jar %{buildroot}%{solr_install_dir}/dist/solrj-lib
+
+%{__mkdir} -p %{buildroot}%{solr_install_dir}/dist/solrj-lib
+%{__install} -p -m 644 dist/solrj-lib/*.jar %{buildroot}%{solr_install_dir}/dist/solrj-lib
 
 %{__mkdir} -p %{buildroot}%{solr_install_dir}/docs/solr-%{plugin_name}
 %{__cp} -R -p docs/solr-%{plugin_name}/* %{buildroot}%{solr_install_dir}/docs/solr-%{plugin_name}
@@ -42,9 +46,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%{plugin_install_dir}/*
+%{solr_install_dir}/dist/solr-solrj-*.jar
+%{solr_install_dir}/dist/solrj-lib/*.jar
 %{solr_install_dir}/docs/solr-%{plugin_name}
 %docdir %{solr_install_dir}/docs/solr-%{plugin_name}
+
+%doc %{solr_install_dir}/docs/solr-%{plugin_name}/index.html
 
 %changelog
 

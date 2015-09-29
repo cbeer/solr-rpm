@@ -5,7 +5,7 @@
 
 Name:           solr
 Version:        5.3.1
-Release:        0%{?dist}
+Release:        1%{?dist}
 Summary:        A distributed, highly available, RESTful search engine
 
 Group:          System Environment/Daemons
@@ -58,6 +58,9 @@ rm -rf $RPM_BUILD_ROOT
 
 #libs
 %{__mkdir} -p %{buildroot}%{_javadir}/%{name}/dist
+%{__install} -p -m 644 dist/solr-analytics-*.jar %{buildroot}%{base_install_dir}/dist
+%{__install} -p -m 644 dist/solr-cell-*.jar %{buildroot}%{base_install_dir}/dist
+%{__install} -p -m 644 dist/solr-dataimporthandler-%{version}.jar %{buildroot}%{base_install_dir}/dist
 %{__install} -p -m 644 dist/solr-core-*.jar %{buildroot}%{base_install_dir}/dist
 
 # server libs

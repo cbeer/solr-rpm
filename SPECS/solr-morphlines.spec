@@ -6,7 +6,7 @@
 
 Name:           solr-%{plugin_name}
 Version:        5.3.1
-Release:        0%{?dist}
+Release:        1%{?dist}
 Summary:        A distributed, highly available, RESTful search engine
 
 Group:          System Environment/Daemons
@@ -34,6 +34,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__mkdir} -p %{buildroot}%{plugin_install_dir}
 %{__install} -p -m 755 contrib/morphlines-cell/lib/* %{buildroot}%{plugin_install_dir}
 %{__install} -p -m 755 contrib/morphlines-core/lib/* %{buildroot}%{plugin_install_dir}
+%{__install} -p -m 755 dist/solr-%{plugin_name}-cell-* %{buildroot}%{plugin_install_dir}
+%{__install} -p -m 755 dist/solr-%{plugin_name}-core-* %{buildroot}%{plugin_install_dir}
 
 %{__mkdir} -p %{buildroot}%{solr_install_dir}/docs/solr-%{plugin_name}-cell
 %{__mkdir} -p %{buildroot}%{solr_install_dir}/docs/solr-%{plugin_name}-core

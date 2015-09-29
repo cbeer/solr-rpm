@@ -6,7 +6,7 @@
 
 Name:           solr-%{plugin_name}
 Version:        5.3.1
-Release:        0%{?dist}
+Release:        1%{?dist}
 Summary:        A distributed, highly available, RESTful search engine
 
 Group:          System Environment/Daemons

@@ -3,8 +3,8 @@
 %define plugin_name solrj
 
 Name:           solr-%{plugin_name}
-Version:        5.3.1
-Release:        1%{?dist}
+Version:        5.4.0
+Release:        0%{?dist}
 Summary:        A distributed, highly available, RESTful search engine
 
 Group:          System Environment/Daemons
@@ -54,6 +54,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{solr_install_dir}/docs/solr-%{plugin_name}/index.html
 
 %changelog
+
+* Sat Dec 15 2015 Chris Beer <chris@cbeer.info> - 5.4.0-0
+- Update to Solr 5.4.0
 
 * Sat Sep 26 2015 Chris Beer <chris@cbeer.info> - 5.3.1-0
 - Update to Solr 5.3.1

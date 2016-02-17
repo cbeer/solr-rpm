@@ -15,6 +15,7 @@ Source0:        http://archive.apache.org/dist/lucene/solr/%{version}/solr-%{ver
 Source1:        init.d-solr
 Source2:        sysconfig-solr
 Patch0:         solr.xml.patch
+Patch1:         log4j.properties.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:       jpackage-utils
@@ -34,6 +35,7 @@ A distributed, highly available, RESTful search engine
 %setup -q -n %{name}-%{version}
 
 %patch0 -p0
+%patch1 -p0
 
 %build
 true

@@ -1,0 +1,19 @@
+--- server/resources/log4j.properties-orig	2015-12-07 09:50:08.000000000 -0800
++++ server/resources/log4j.properties	2016-02-16 19:34:42.000000000 -0800
+@@ -1,6 +1,6 @@
+ #  Logging level
+ solr.log=logs
+-log4j.rootLogger=INFO, file, CONSOLE
++log4j.rootLogger=INFO, file
+
+ log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+
+@@ -9,7 +9,7 @@
+
+ #- size rotation with log cleanup.
+ log4j.appender.file=org.apache.log4j.RollingFileAppender
+-log4j.appender.file.MaxFileSize=4MB
++log4j.appender.file.MaxFileSize=200MB
+ log4j.appender.file.MaxBackupIndex=9
+
+ #- File to log to and log format

@@ -13,9 +13,9 @@ License:        ASL 2.0
 URL:            http://lucene.apache.org/solr/
 Source0:        http://archive.apache.org/dist/lucene/solr/%{version}/solr-%{version}.tgz
 Source1:        init.d-solr
-Source2:        logrotate.d-solr
-Source3:        sysconfig-solr
+Source2:        sysconfig-solr
 Patch0:         solr.xml.patch
+Patch1:         log4j.properties.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:       jpackage-utils
@@ -35,6 +35,7 @@ A distributed, highly available, RESTful search engine
 %setup -q -n %{name}-%{version}
 
 %patch0 -p0
+%patch1 -p0
 
 %build
 true
@@ -119,7 +120,6 @@ ln -sf %{_sysconfdir}/solr/solr.xml %{buildroot}%{_localstatedir}/lib/%{name}/so
 
 # logs
 %{__mkdir} -p %{buildroot}%{_localstatedir}/log/%{name}
-%{__install} -D -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/solr
 ln -sf %{_localstatedir}/log/%{name} %{buildroot}%{base_install_dir}/server/logs
 
 # plugins
@@ -154,7 +154,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_sysconfdir}/rc.d/init.d/solr
 %config(noreplace) %{_sysconfdir}/sysconfig/solr
-%{_sysconfdir}/logrotate.d/solr
 %dir %{_javadir}/solr
 %{_javadir}/solr/bin/*
 %{_javadir}/solr/dist/*

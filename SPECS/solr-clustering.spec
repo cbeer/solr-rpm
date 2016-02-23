@@ -5,7 +5,7 @@
 %define plugin_source_dir contrib/%{plugin_name}
 
 Name:           solr-%{plugin_name}
-Version:        5.4.1
+Version:        5.5.0
 Release:        0%{?dist}
 Summary:        A distributed, highly available, RESTful search engine
 
@@ -49,6 +49,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{plugin_source_dir}/README.txt
 
 %changelog
+* Tue Feb 23 2016 Chris Beer <chris@cbeer.info> - 5.5.0-0
+- Update to Solr 5.5.0
+
 * Mon Jan 25 2016 Chris Beer <chris@cbeer.info> - 5.4.1-0
 - Update to Solr 5.4.1
 

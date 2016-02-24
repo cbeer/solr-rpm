@@ -129,7 +129,7 @@ ln -sf %{_localstatedir}/log/%{name} %{buildroot}%{base_install_dir}/server/logs
 %{__mkdir} -p %{buildroot}%{_sysconfdir}/rc.d/init.d
 %{__mkdir} -p %{buildroot}%{_sysconfdir}/sysconfig
 %{__install} -m 755 %{SOURCE1} %{buildroot}%{_sysconfdir}/rc.d/init.d/solr
-%{__install} -m 755 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/solr
+%{__install} -m 755 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/solr
 
 %{__mkdir} -p %{buildroot}%{_localstatedir}/run/solr
 %{__mkdir} -p %{buildroot}%{_localstatedir}/lock/subsys/solr
